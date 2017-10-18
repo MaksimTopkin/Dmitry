@@ -1,0 +1,58 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+</head>
+<body><object class="main">
+	<object class="furniture">
+		<object class="chairs">
+			<object class="chair" id="ch001" ></object>
+			<object class="chair" id="ch002" ></object>
+			<object class="chair" id="ch003" ></object>
+			<object class="chair" id="ch004" ></object>
+			<object class="chair" id="ch005" ></object>
+		</object>
+		<object class="tables">
+			<object class="table" id="ta001" ></object>
+			<object class="table" id="ta003" ></object>
+			<object class="table" id="ta002" ></object>
+		</object>
+	</object>
+	<object class="constructions">
+		<object class="doors">
+		</object>
+		<object class="walls">
+		</object>
+		<object class="windows">
+		</object>
+		<object class="floor">
+		</object>
+		<object class="ceiling">
+		</object>
+	</object>
+	<object class="hardware">
+	
+	</object>
+	<object class="software">
+	
+	</object>
+</object></body>
+<script>
+n=Array();
+level=0;
+function traveler(who){
+	len=who.childNodes.length;
+	var i=0;
+	document.body.innerHTML+="<br >Текущий элемент "+who.nodeName;
+	for(i=0; i<len; i++){
+		if(who.childNodes[i].nodeType==1){
+			document.body.innerHTML+="<br >"+i+" Узел найден "+who.childNodes[i].attributes[0].value;
+			document.body.innerHTML+="<br >В узле вложений "+who.childNodes[i].childNodes.length;
+			if(who.childNodes[i].childNodes.length>0){
+				traveler(who.childNodes[i]);
+			}
+		}
+	}
+}
+traveler(document.body);
+</script>
+</html>

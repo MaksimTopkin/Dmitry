@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Maks1m</title>
+	<!--Maksimalno i minimalno srednee zna4enie po kazdoj gruppe-->
+	<meta charset="utf-8">
+</head>
+<body>
+
+	<object class="a" id="a001" value="1"> </object>
+	<object class="a" id="a002" value="2"> </object>
+	<object class="a" id="a003" value="3"> </object>
+	<object class="a" id="a004" value="5"> </object>
+	<object class="b" id="b001" value="1"> </object>
+	<object class="b" id="b002" value="2"> </object>
+	<object class="b" id="b003" value="3"> </object>
+	<object class="b" id="b004" value="4"> </object>
+	<object class="b" id="b005" value="5"> </object>
+	<object class="b" id="b006" value="7"> </object>	
+	
+</body>
+<script type="text/javascript">
+	info=document.body.childNodes;
+	N=info.length;
+	classes=Array(); // dlja zapisi razli4nyh variantov klassov
+	/*
+		if (info[i].hasAttributes("class")){
+			newAttribute=info[i].hasAttributes("class");
+			if (classes.indexOf(newAttribute)==-1){
+				classes[]=newAttribute;
+			};
+		}
+		alert (classes);*/
+//=================na4alo vormirovanie spiska klassov=====================
+for (i=0; i<N; i++){
+	if(info[i].nodeType==1){
+		for (j=0; j<info[i].attributes.length; j++){
+			if (info[i].attributes[j].name=="class"){
+				newAttribute=info[i].attributes[j].value;
+				if (classes.indexOf(newAttribute)==-1){
+					classes.push (newAttribute);
+				}
+			}
+		}
+	}
+} 
+//=============konec formirovanie spiska klassov===========================
+//----------vy4islenija maksimalnogo i minimalnogo i srednego--------------
+//-----------------po kazdomu klassu---------------------------------------
+minValues=Array();
+maxValues = Array();
+summas=Array();
+counts=Array();
+aver=Array();
+diap=Array();
+milt=Array();
+avgeom=Array();
+/*-------------------------raspoznovanie atributov------------------*/
+for (i=0; i<N; i++){
+	currentClass='';currentID='';currentValue='';
+		if (info[i].nodeType==1){
+		for (j=0; j<info[i].attributes.length; j++){
+			if (info[i].attributes[j].name=="class") {currentClass=info[i].attributes[j].value;}
+			if (info[i].attributes[j].name=="id") {currentID=info[i].attributes[j].value;}
+			if (info[i].attributes[j].name=="value") {currentValue=parseFloat(info[i].attributes[j].value);}
+		}
+	/*-----------------------opredelenie minimalnogo 4isla v kazdom klasse--------*/
+		if (typeof minValues[classes.indexOf(currentClass)]!=="undefined"){			
+			if(minValues[classes.indexOf(currentClass)]>currentValue){
+				minValues[classes.indexOf(currentClass)]=currentValue;
+			}
+		}else {
+			minValues[classes.indexOf(currentClass)]=currentValue;
+		}
+		/*-----------------------opredelenie maksimalnogo 4isla v kazdom klasse--------*/
+		if (typeof maxValues[classes.indexOf(currentClass)]!=="undefined"){			
+			if(maxValues[classes.indexOf(currentClass)]<currentValue){
+				maxValues[classes.indexOf(currentClass)]=currentValue;
+			}
+		}else {
+			maxValues[classes.indexOf(currentClass)]=currentValue;
+		}
+		/*-----------------------opredelenie summy po kazdomu klassu--------*/
+		if (typeof summas[classes.indexOf(currentClass)]!=="undefined"){			
+			if(summas[classes.indexOf(currentClass)]+=currentValue){
+				summas[classes.indexOf(currentClass)]=currentValue;
+			}
+		}else {
+			summas[classes.indexOf(currentClass)]=currentValue;
+		}
+		/*-----------------------opredelenie koli4estva elementov v kazdomklasse--------*/
+		if (typeof counts[classes.indexOf(currentClass)]!=="undefined"){			
+			counts[classes.indexOf(currentClass)]+=1;
+			
+		}else {
+			counts[classes.indexOf(currentClass)]=1;
+		}
+	}
+}
+
+classN=classes.length;
+ for (i=0; i<classN;i++){
+ 	aver[i]=summas[i]/counts[i];
+ 	diap[i]=maxValues[i]-minValues[i];
+ 	avgeom[i]=milt[i]/counts[i];
+ }
+
+
+alert(minValues);
+alert(maxValues);
+alert(summas);
+alert(counts);
+alert(aver);
+alert(diap);
+alert(avgeom);
+
+function graf (arr) {
+	document.body.innerHTML+='<div style = "border:none; border-left:1px solid grey; border-bottom:1px solid grey; width:'+(arr.lenght*50*m)+'px; height:'+(Math.max.apply(null,arr)+40)+'px">';
+	document.body.innerHTML+='</div>'
+}
+
+graf(summas);
+
+</script>
+</html>

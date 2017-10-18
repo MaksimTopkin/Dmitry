@@ -1,0 +1,136 @@
+<html>
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+<div id="dates">
+<object class="a" id="a001" value="1" ></object>
+<object class="a" id="a002" value="2" ></object>
+<object class="a" id="a003" value="3" ></object>
+<object class="c" id="a004" value="4" ></object>
+<object class="c" id="b001" value="1" ></object>
+<object class="b" id="b002" value="2" ></object>
+<object class="b" id="b003" value="3" ></object>
+<object class="b" id="b004" value="4" ></object>
+<object class="b" id="b004" value="5" ></object>
+<object class="z" id="b004" value="6" ></object>
+</div>
+</body>
+<script>
+function stat(place){
+info=document.getElementById(place).childNodes;
+N=info.length; // 
+classes=Array(); // для записи различных вариантов классов
+/*--------------- формирование списка классов -------------------------*/
+for(i=0; i<N; i++){
+	if(info[i].nodeType==1){
+		for(j=0; j<info[i].attributes.length; j++){
+			if(info[i].attributes[j].name=="class"){
+				newAttribute=info[i].attributes[j].value;
+				if(classes.indexOf(newAttribute)==-1){
+					classes.push(newAttribute);
+				}
+			}
+		}
+	}
+}
+/*------------конец формирования списка классов ---------*/
+/*-- вычисление максимального, минимального и среднего
+-------------------- по каждому классу------------------*/
+//minValues=Array();
+//maxValues=Array();
+//summas=Array();
+//counts=Array();
+//aver=Array();
+//diap=Array();
+//milt=Array();
+//avgeom=Array();
+
+minValues=Array();
+maxValues=Array();
+summas=Array();
+counts=Array();
+aver=Array();
+diap=Array();
+milt=Array();
+avgeom=Array();
+for(i=0; i<N; i++){
+	if(info[i].nodeType==1){
+		currentClass='';currentID='';currentValue='';
+		for(j=0; j<info[i].attributes.length; j++){
+			if(info[i].attributes[j].name=="class"){currentClass=info[i].attributes[j].value;}
+			if(info[i].attributes[j].name=="id"){currentID=info[i].attributes[j].value;}
+			if(info[i].attributes[j].name=="value"){currentValue=parseFloat(info[i].attributes[j].value);}
+		}
+		/*---------- Определение минимального числа в каждом классе -----------*/
+		if(typeof minValues[classes.indexOf(currentClass)]!=="undefined"){
+			if(minValues[classes.indexOf(currentClass)]>currentValue){
+				minValues[classes.indexOf(currentClass)]=currentValue;
+			}
+		}else{
+			minValues[classes.indexOf(currentClass)]=currentValue;
+		}
+		/*---------------------------------------------------------*/
+		/*--------- Определение максимального числа в каждом классе --------*/
+		if(typeof maxValues[classes.indexOf(currentClass)]!=="undefined"){
+			if(maxValues[classes.indexOf(currentClass)]<currentValue){
+				maxValues[classes.indexOf(currentClass)]=currentValue;
+			}
+		}else{
+			maxValues[classes.indexOf(currentClass)]=currentValue;
+		}
+		/*----------------------------------------------------------------*/
+		/*---- определение суммы по каждому классу ----------------------*/
+		if(typeof summas[classes.indexOf(currentClass)]!=="undefined"){
+			summas[classes.indexOf(currentClass)]+=currentValue;
+		}else{
+			summas[classes.indexOf(currentClass)]=currentValue;
+		}	
+		/*----------------------------------------------------------------*/
+		/*---- определение суммы по каждому классу ----------------------*/
+		if(typeof milt[classes.indexOf(currentClass)]!=="undefined"){
+			milt[classes.indexOf(currentClass)]*=currentValue;
+		}else{
+			milt[classes.indexOf(currentClass)]=currentValue;
+		}	
+		/*----------------------------------------------------------------*/
+		/*----- определение количества элементов в каждом классе ---------*/
+		if(typeof counts[classes.indexOf(currentClass)]!=="undefined"){
+			counts[classes.indexOf(currentClass)]+=1;
+		}else{
+			counts[classes.indexOf(currentClass)]=1;
+		}		
+		/*----------------------------------------------------------------*/
+	}
+}
+classN=classes.length;
+for(i=0;i<classN;i++){
+	aver[i]=summas[i]/counts[i];
+	diap[i]=maxValues[i]-minValues[i];
+	avgeom[i]=milt[i]/counts[i];
+}
+}
+//alert(classes);
+//alert(minValues);
+//alert(maxValues);
+//alert(summas);
+//alert(counts);
+//alert(aver);
+//alert(diap);
+//alert(avgeom);
+function graf(arr,m,name){
+	document.body.innerHTML+='<div id="'+name+'" style=" vertical-align:bottom;border:none; border-left:1px solid grey; border-bottom:1px solid grey; width:'+(arr.length*50*m+40)+'px; height:'+(Math.max.apply(null,arr)*m+40)+'px">';
+	for(z=0;z<arr.length;z++){
+		document.getElementById(name).innerHTML+='<div style="display:inline-block; vertical-align:bottom;margin-top:'+(Math.max.apply(null,arr)*m+40-(arr[z]*m))+'px;width:'+(50*m)+'px;height:'+(arr[z]*m)+'px;background-color:rgb('+Math.floor(Math.random()*230+25)+','+Math.floor(Math.random()*230+25)+','+Math.floor(Math.random()*230+25)+')"></div>';
+	}
+	document.body.innerHTML+='</div>';
+}
+
+
+
+
+stat("dates");
+graf(summas,4,'text1');
+graf(counts,4,'text2');
+</script>
+</html>
